@@ -3,4 +3,10 @@ _test/
 *.mp4
 *.wav
 *.mp3
+*.webp
 __pycache__/
+*.pyc
+.env
+.env.*
+.DS_Store
+Thumbs.db
