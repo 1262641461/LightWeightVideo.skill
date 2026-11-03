@@ -7,7 +7,7 @@ DELAY="${5:-0.7}"
 SUB_END="${6:-3.8}"
 DELAY_MS=$(python -c "print(int(float('$DELAY')*1000))")
 
-FF="${FFMPEG:-D:/ruanjian/DSH/workspace/tools/ffmpeg.exe}"
+FF="${FFMPEG:-ffmpeg}"
 FONT="${FONT:-C\\:/Windows/Fonts/msyh.ttc}"
 
 "$FF" -y -loglevel error -i "$IN" -i "$VOICE" -filter_complex "\

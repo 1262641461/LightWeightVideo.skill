@@ -1,4 +1,10 @@
 # Safe H3 runner: reserve VRAM/RAM for the desktop, unload models and stop ComfyUI when done.
+#
+# Required env vars (or pass as parameters):
+#   COMFY_DIR : path to your ComfyUI folder
+#   COMFY_PY  : python.exe of the ComfyUI venv
+# Optional:
+#   H3_TOOL   : path to h3_i2v.py (defaults to the copy next to this script)
 param(
     [Parameter(Mandatory=$true)][string]$Prompt,
     [Parameter(Mandatory=$true)][string]$Image,
@@ -8,12 +14,15 @@ param(
     [int]$Len = 124,
     [int]$Steps = 8,
     [double]$ReserveVRAM = 2.5,
-    [string]$ComfyDir = "D:\ruanjian\ComfyUI-master",
-    [string]$Python = "D:\ruanjian\comfy-venv\Scripts\python.exe",
-    [string]$Tool = "D:\ruanjian\DSH\workspace\tools\sd\h3_i2v.py"
+    [string]$ComfyDir = $env:COMFY_DIR,
+    [string]$Python = $env:COMFY_PY,
+    [string]$Tool = $env:H3_TOOL
 )
 
 $ErrorActionPreference = "Stop"
+if (-not $ComfyDir) { throw "set COMFY_DIR to your ComfyUI folder" }
+if (-not $Python)   { throw "set COMFY_PY to the python.exe of the ComfyUI venv" }
+if (-not $Tool)     { $Tool = Join-Path $PSScriptRoot "h3_i2v.py" }
 
 function Wait-Comfy {
     param([int]$TimeoutSec = 240)
@@ -36,8 +45,8 @@ if (-not $listening) {
         "main.py", "--lowvram", "--reserve-vram", "$ReserveVRAM",
         "--listen", "127.0.0.1", "--port", "8188"
     ) -WorkingDirectory $ComfyDir -WindowStyle Hidden `
-      -RedirectStandardOutput "D:\ruanjian\comfy.log" `
-      -RedirectStandardError "D:\ruanjian\comfy.err.log"
+      -RedirectStandardOutput (Join-Path $env:TEMP "comfy.log") `
+      -RedirectStandardError (Join-Path $env:TEMP "comfy.err.log")
     $started = $true
     if (-not (Wait-Comfy 240)) { throw "ComfyUI start timeout" }
 } else {

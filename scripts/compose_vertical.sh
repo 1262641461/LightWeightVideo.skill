@@ -4,8 +4,8 @@
 set -e
 OUT="$1"; TITLE="$2"; shift 2
 SHOTS=("$@")
-FF="${FFMPEG:-D:/ruanjian/DSH/workspace/tools/ffmpeg.exe}"
-FFP="${FFPROBE:-D:/ruanjian/DSH/workspace/tools/ffprobe.exe}"
+FF="${FFMPEG:-ffmpeg}"
+FFP="${FFPROBE:-ffprobe}"
 BG="${BGCOLOR:-0x0B1430}"
 FPS=24
 XF=0.4

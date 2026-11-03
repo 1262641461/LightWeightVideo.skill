@@ -13,6 +13,14 @@ description: 用本机 ComfyUI + MiniMax H3 把一张 Q 版角色立绘做成 15
 - 想做 10~20 秒、单角色、1~3 个镜头的短动画
 - 不想花钱、也不想建模
 
+## 环境变量
+```bash
+export COMFY_DIR=/path/to/ComfyUI       # run_h3.ps1 用
+export COMFY_PY=/path/to/python.exe     # ComfyUI 的 venv
+export FFMPEG=ffmpeg FFPROBE=ffprobe EDGE_TTS=edge-tts   # 可选，默认走 PATH
+```
+（Windows PowerShell：`$env:COMFY_DIR = "D:\ComfyUI"`）
+
 ## 硬前提
 | 项 | 要求 |
 |---|---|

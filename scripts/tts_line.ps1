@@ -1,11 +1,12 @@
-# Xiaoyi TTS line generator (edge-tts)
+# TTS line generator (edge-tts, voice: zh-CN-XiaoyiNeural)
+# Env vars (optional): EDGE_TTS (edge-tts executable), FFMPEG
 param(
     [Parameter(Mandatory=$true)][string]$Text,
     [Parameter(Mandatory=$true)][string]$Out
 )
 
-$exe = 'D:\ruanjian\dsh-pet-venv\Scripts\edge-tts.exe'
-$ff = 'D:\ruanjian\DSH\workspace\tools\ffmpeg.exe'
+$exe = if ($env:EDGE_TTS) { $env:EDGE_TTS } else { "edge-tts" }
+$ff  = if ($env:FFMPEG)   { $env:FFMPEG }   else { "ffmpeg" }
 
 $clean = ($Text -replace "[\r\n\t]+", " ").Trim()
 if (-not $clean) { throw "empty text" }
@@ -19,5 +20,6 @@ if (-not (Test-Path $tmpMp3)) { throw "edge-tts produced nothing" }
 
 & $ff -y -loglevel error -i $tmpMp3 $Out
 if (-not (Test-Path $Out)) { throw "ffmpeg convert failed" }
+Remove-Item $tmpMp3 -Force -ErrorAction SilentlyContinue
 
 Write-Output "SAVED $Out"
